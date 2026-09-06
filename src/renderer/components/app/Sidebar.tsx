@@ -8,7 +8,7 @@ import useAvatar from '@renderer/hooks/useAvatar'
 import { useMiniApps } from '@renderer/hooks/useMiniApps'
 import { useSidebarFavorites } from '@renderer/hooks/useSidebarFavorites'
 import { openSettingsTab } from '@renderer/services/mainWindowNavigation'
-import { tabSessionIdFromUrl, tabSessionRegistry, withoutTabSession } from '@renderer/services/TabSessionRegistry'
+import { tabSessionIdFromUrl, tabSessionRegistry } from '@renderer/services/TabSessionRegistry'
 import { MINI_APP_ROUTE_PREFIX, miniAppIdFromTabUrl } from '@renderer/utils/miniAppKeepAlive'
 import { getDefaultRouteTitle } from '@renderer/utils/routeTitle'
 import type { SidebarAppId } from '@renderer/utils/sidebar'
@@ -17,6 +17,7 @@ import {
   getSidebarFavoriteKey,
   getSidebarMenuPath,
   isMessageOnlyConversationUrl,
+  isSamePage,
   resolveSidebarActiveItem,
   tabBelongsToApp
 } from '@renderer/utils/sidebar'
@@ -210,7 +211,7 @@ export default function Sidebar({
           !!activeTab &&
           (app.conversationRoute
             ? tabBelongsToApp(app, activeTab.url) && !isMessageOnlyConversationUrl(activeTab.url)
-            : withoutTabSession(activeTab.url) === path)
+            : isSamePage(activeTab.url, path))
         if (isActiveTarget) return
       }
 
