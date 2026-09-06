@@ -928,8 +928,7 @@ describe('app Sidebar', () => {
       url: '/app/translate?tabSession=running',
       title: 'Translate'
     }
-    const session = tabSessionRegistry.getOrCreate('running', () => true)
-    session.addStream('translate:running')
+    tabSessionRegistry.getOrCreate('running', () => ({ isBusy: () => true, cancel: () => {}, release: () => true }))
 
     render(<Sidebar />)
     fireEvent.click(screen.getByTestId('sidebar-item-assistants'))
@@ -946,8 +945,11 @@ describe('app Sidebar', () => {
       url: '/app/translate?tabSession=idle-session',
       title: 'Translate'
     }
-    const session = tabSessionRegistry.getOrCreate('idle-session', () => true)
-    session.addStream('translate:idle')()
+    tabSessionRegistry.getOrCreate('idle-session', () => ({
+      isBusy: () => false,
+      cancel: () => {},
+      release: () => true
+    }))
 
     render(<Sidebar />)
     fireEvent.click(screen.getByTestId('sidebar-item-assistants'))
